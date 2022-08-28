@@ -26,6 +26,9 @@ export default {
 
   methods: {
     add() {
+      if (!this.todo.items) {
+        this.todo.items = [];
+      }
       this.todo.items.push({ check: false, name: null });
     },
 

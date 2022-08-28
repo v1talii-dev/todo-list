@@ -3,7 +3,11 @@
     <h2>{{ todo.name }}</h2>
     <div v-for="(item, idx) of todo.items" :key="idx">
       <input v-model="todo.items[idx].check" type="checkbox" />
-      <input v-model="todo.items[idx].name" type="text" />
+      <input
+        type="text"
+        :value="todo.items[idx].name"
+        @change="(e) => (todo.items[idx].name = e.target.value)"
+      />
       <button @click="remove(idx)">🗑️</button>
     </div>
     <button @click="add">add</button>
