@@ -74,8 +74,8 @@ export default {
   watch: {
     todo: {
       deep: true,
-      handler(v) {
-        set(ref(db, 'todo'), v);
+      handler() {
+        this.setTodo();
       },
     },
   },
@@ -84,12 +84,22 @@ export default {
     this.registerWatchers();
   },
 
+  destroy() {
+    this.unregisterWatchers();
+  },
+
   methods: {
     registerWatchers() {
       const todo = ref(db, 'todo');
       onValue(todo, (snapshot) => {
         this.todo = snapshot.val();
       });
+
+      window.addEventListener('online', this.syncTodo);
+    },
+
+    unregisterWatchers() {
+      window.removeEventListener('online', this.syncTodo);
     },
 
     add(form) {
@@ -112,6 +122,14 @@ export default {
       items[idx].check = checked;
 
       this.todo.items = items.sort((a, b) => Number(a.check) - Number(b.check));
+    },
+
+    syncTodo() {
+      // TODO: реализовать синхронизацию данных
+    },
+
+    setTodo() {
+      set(ref(db, 'todo'), this.todo);
     },
   },
 };
